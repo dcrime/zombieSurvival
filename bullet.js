@@ -37,20 +37,17 @@ class Bullet {
         var lineX = pos.x;
         var lineY = pos.y;
 
-        ctx.save();
-        ctx.strokeStyle = 'white';
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(lineX, lineY);
-        //ctx.closePath();
-        ctx.stroke();
-        ctx.restore();
+        var path = [
+            this.x, this.y,
+            lineX, lineY
+        ]
+        drawShape(path, false)
     }
 
     update() {
         this.move();
         this.draw();
-        if(this.lifeTime >= this.lifeSpan) this.destroy();
+        if (this.lifeTime >= this.lifeSpan) this.destroy();
         else this.lifeTime++
     }
 }

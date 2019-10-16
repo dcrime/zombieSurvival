@@ -23,13 +23,7 @@ class Player {
     }
     
     draw(){
-        ctx.save();
-        ctx.strokeStyle='white';
-        ctx.fillStyle='white';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.restore();
+        drawArc(this.x, this.y, this.r);
     }
 
     update() {
