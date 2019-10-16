@@ -47,3 +47,41 @@ function findNewPoint(x, y, angle, distance) {
 
     return result;
 }
+
+function progressBar(x, y, w, h, p, mP) {
+    var percentage = (p/mP) * w
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.fillStyle = 'lime';
+    ctx.beginPath();
+    ctx.fillRect(x, y+1, percentage-1, h-1);
+    ctx.stroke();
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.stroke();
+    ctx.restore();
+}
+
+function drawArc(x, y, r, c = "white"){
+    ctx.save();
+    ctx.strokeStyle = c;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, 2 * Math.PI);
+    ctx.stroke();
+    ctx.restore();
+}
+function drawShape(shape, close, color = "white") {
+    ctx.save();
+    var i = 0;
+    ctx.beginPath();
+    ctx.strokeStyle = color;
+    ctx.moveTo(shape[i++], shape[i++]);
+    while (i < shape.length) {
+        ctx.lineTo(shape[i++], shape[i++]);
+    }
+    if (close) { ctx.closePath() }
+    ctx.stroke();
+    ctx.restore();
+}
