@@ -6,6 +6,7 @@ class Zombie {
         this.s = s;
         this.r = s / 2;
         this.detRad = s * 3;
+        this.maxtHealth = health
         this.health = health;
         this.speed = speed;
         this.goal = { x: x, y: y };
@@ -28,17 +29,13 @@ class Zombie {
     }
 
     drawRad() {
-        ctx.save();
-        if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r) ctx.strokeStyle = 'red';
-        else ctx.strokeStyle = 'green';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.detRad, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.restore();
+        if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r) drawArc(this.x, this.y, this.detRad, "red");
+        else drawArc(this.x, this.y, this.detRad, "green");
     }
 
     radius() {
-        //this.drawRad();
+        if (esp.vision) this.drawRad();
+
         if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r) return true;
         return false;
     }
@@ -84,24 +81,23 @@ class Zombie {
     }
 
     drawPath() {
-        ctx.save();
-        ctx.strokeStyle = 'purple';
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(this.goal.x, this.goal.y);
-        ctx.stroke();
-        ctx.restore();
+        var path = [
+            this.x, this.y,
+            this.goal.x, this.goal.y
+        ]
+
+        drawShape(path, false, "purple")
+    }
+
+    drawHealth() {
+        if (this.health >= this.maxtHealth) return;
+        progressBar(this.x - this.r, this.y + this.s, this.s, this.r / 2, this.health, this.maxtHealth)
     }
 
     draw() {
-        this.drawPath();
-        ctx.save();
-        ctx.strokeStyle = 'white';
-        ctx.fillStyle = 'white';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-        ctx.stroke();
-        ctx.restore();
+        if (esp.path) this.drawPath();
+        this.drawHealth();
+        drawArc(this.x, this.y, this.r);
     }
 
     destroy() {
@@ -112,14 +108,17 @@ class Zombie {
     };
 
     shouldDie() {
-        var die = false
+        var damage = false
         bullets.forEach(bullet => {
             if ((dist(bullet.x, bullet.y, this.x, this.y) < this.r + bullet.r)) {
-                die = true;
+                damage = true;
                 bullet.destroy();
             }
         });
-        return die;
+        if (damage) this.health -= gun.damage;
+        if (this.health <= 0)
+            return true;
+        else return false;
     }
 
     update() {
