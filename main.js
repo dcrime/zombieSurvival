@@ -7,26 +7,15 @@ function createFewZombies() {
             x: Math.random() * c.width,
             y: Math.random() * c.height
         }
-        createZombies(randPos.x, randPos.y, 20, 50, 1, 100);
+        createZombies(randPos.x, randPos.y, 20, 50, 0.5, 100);
     }
 }
 
 createFewZombies();
 
-function drawLines(pos) {
-    ctx.save();
-    ctx.strokeStyle = 'white';
-    ctx.beginPath();
-    ctx.moveTo(player.x, player.y);
-    ctx.lineTo(pos.x, pos.y);
-    ctx.closePath();
-    ctx.stroke();
-    ctx.restore();
-}
 
 function draw() {
-    drawLines(mouse)
-    console.log()
+    //console.log()
 }
 
 function gameLoop() {
@@ -35,7 +24,7 @@ function gameLoop() {
     gun.update();
     drawBullets();
     drawZombies();
-    //draw();
+    draw();
     request = requestAnimationFrame(gameLoop)
 }
 
