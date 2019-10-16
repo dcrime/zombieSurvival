@@ -7,47 +7,51 @@ class Gun {
         this.y = player.y;
         this.sound = 100
         this.speed = 5
+        this.damage = 5
         this.cooldown = 0
         this.maxCooldown = 7;
         this.endPos
     }
+
     shoot() {
-        if(!this.isCool()) return
-        zombies.forEach(zombie => {zombie.canHear()})
+        if (!this.isCool()) return
+        zombies.forEach(zombie => { zombie.canHear() })
         createBullets(gun.endPos.x, gun.endPos.y, 2, this.rot, this.speed)
         this.cooldown = 0;
     }
-    isCool(){
+    isCool() {
         if (this.cooldown >= this.maxCooldown) return true
         return false;
     }
-    coolUpdate(){
-        if (this.cooldown < this.maxCooldown){
+    coolUpdate() {
+        if (this.cooldown < this.maxCooldown) {
             this.cooldown++
         }
     }
-    draw() {
+
+    move(){
         this.rot = rotation(mouse, player)
 
         var pos = direction(player, this.rot, player.r);
         this.x = pos.x;
         this.y = pos.y;
+    }
 
+    draw() {
         this.endPos = direction(player, this.rot, player.r + this.s);
         var lineX = this.endPos.x;
         var lineY = this.endPos.y;
 
-        ctx.save();
-        ctx.strokeStyle = 'white';
-        ctx.beginPath();
-        ctx.moveTo(this.x, this.y);
-        ctx.lineTo(lineX, lineY);
-        //ctx.closePath();
-        ctx.stroke();
-        ctx.restore();
+        var path = [
+            this.x, this.y,
+            lineX, lineY
+        ]
+
+        drawShape(path, false)
     }
 
     update() {
+        this.move();
         this.draw();
         this.coolUpdate();
     }
