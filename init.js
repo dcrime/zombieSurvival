@@ -5,6 +5,22 @@ c.style = -window.innerHeight / 2;
 c.width = window.innerWidth / 2;
 c.height = window.innerHeight / 2;
 
+var esp = {
+    enable: function () {
+        this.path = true;
+        this.sound = true;
+        this.vision = true;
+    },
+    disable: function () {
+        this.path = false;
+        this.sound = false;
+        this.vision = false;
+    },
+    path: false,
+    sound: false,
+    vision: false,
+}
+
 var keymap = {
     a: false,
     s: false,
