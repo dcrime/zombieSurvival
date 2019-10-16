@@ -7,7 +7,7 @@ class Bullet {
         this.r = this.s / 2;
         this.speed = speed;
         this.lifeTime = 0;
-        this.lifeSpan = 50;
+        this.lifeSpan = 100;
         this.rot = rot;
     }
 

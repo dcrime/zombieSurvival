@@ -111,10 +111,13 @@ class Zombie {
         destroyZombies.push(id);
     };
 
-    shouldDie(){
+    shouldDie() {
         var die = false
         bullets.forEach(bullet => {
-            if(dist(bullet.x, bullet.y, this.x, this.y) < this.r + bullet.r) die = true;
+            if ((dist(bullet.x, bullet.y, this.x, this.y) < this.r + bullet.r)) {
+                die = true;
+                bullet.destroy();
+            }
         });
         return die;
     }
@@ -123,7 +126,7 @@ class Zombie {
         this.move();
         this.radius();
         this.draw();
-        if(this.shouldDie()) this.destroy();
+        if (this.shouldDie()) this.destroy();
     };
 }
 
