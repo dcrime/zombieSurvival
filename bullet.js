@@ -1,10 +1,11 @@
 class Bullet {
-    constructor(x, y, s, rot, speed, id) {
+    constructor(x, y, s, rot, speed, damage, id) {
         this.id = id;
         this.x = x;
         this.y = y;
         this.s = s;
         this.r = this.s / 2;
+        this.damage = damage;
         this.speed = speed;
         this.lifeTime = 0;
         this.lifeSpan = 100;
@@ -57,14 +58,14 @@ bullets = [];
 bulletIDs = [];
 destroybullets = [];
 
-function createBullets(x, y, s, rot, size) {
+function createBullets(x, y, s, rot, size, damage) {
     var id;
     if (!bulletIDs.length) {
         id = bullets.length + 1
     } else {
         id = bulletIDs.shift();
     }
-    bullets.push(new Bullet(x, y, s, rot, size, id));
+    bullets.push(new Bullet(x, y, s, rot, size, damage, id));
 }
 
 function drawBullets() {

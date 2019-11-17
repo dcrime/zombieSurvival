@@ -15,6 +15,7 @@ createFewZombies();
 
 
 function draw() {
+    buyMenuHandler();
     //console.log()
 }
 

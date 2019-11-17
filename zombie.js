@@ -5,6 +5,7 @@ class Zombie {
         this.y = y;
         this.s = s;
         this.r = s / 2;
+        this.worth = Math.round(Math.random()*health/s);
         this.detRad = s * 3;
         this.maxtHealth = health
         this.health = health;
@@ -101,6 +102,7 @@ class Zombie {
     }
 
     destroy() {
+        player.money += this.worth;
         zombieIDs.push(this.id);
         // Gets the index of this asteroid using it's id
         var id = zombies.findIndex(e => (e.id == this.id))
@@ -109,13 +111,15 @@ class Zombie {
 
     shouldDie() {
         var damage = false
+        var dmg = 0;
         bullets.forEach(bullet => {
             if ((dist(bullet.x, bullet.y, this.x, this.y) < this.r + bullet.r)) {
                 damage = true;
+                dmg = bullet.damage
                 bullet.destroy();
             }
         });
-        if (damage) this.health -= gun.damage;
+        if (damage) this.health -= dmg;
         if (this.health <= 0)
             return true;
         else return false;
@@ -156,3 +160,4 @@ function drawZombies() {
         zombies.splice(id, 1);
     }
 }
+

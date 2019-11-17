@@ -26,6 +26,7 @@ var keymap = {
     s: false,
     d: false,
     w: false,
+    b: false,
 }
 
 var mouse = {

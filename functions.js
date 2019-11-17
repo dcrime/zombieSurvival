@@ -49,12 +49,12 @@ function findNewPoint(x, y, angle, distance) {
 }
 
 function progressBar(x, y, w, h, p, mP) {
-    var percentage = (p/mP) * w
+    var percentage = (p / mP) * w
     ctx.save();
     ctx.lineWidth = 1;
     ctx.fillStyle = 'lime';
     ctx.beginPath();
-    ctx.fillRect(x, y+1, percentage-1, h-1);
+    ctx.fillRect(x, y + 1, percentage - 1, h - 1);
     ctx.stroke();
     ctx.strokeStyle = 'red';
     ctx.lineWidth = 1;
@@ -64,7 +64,7 @@ function progressBar(x, y, w, h, p, mP) {
     ctx.restore();
 }
 
-function drawArc(x, y, r, c = "white"){
+function drawArc(x, y, r, c = "white") {
     ctx.save();
     ctx.strokeStyle = c;
     ctx.beginPath();
@@ -72,6 +72,17 @@ function drawArc(x, y, r, c = "white"){
     ctx.stroke();
     ctx.restore();
 }
+
+function drawRect(x, y, h, w, c = "white") {
+    ctx.save();
+    ctx.strokeStyle = c;
+    //ctx.lineWidth = "10";
+    ctx.beginPath();
+    ctx.rect(x, y, h, w);
+    ctx.stroke();
+    ctx.restore();
+}
+
 function drawShape(shape, close, color = "white") {
     ctx.save();
     var i = 0;

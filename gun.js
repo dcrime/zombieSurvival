@@ -7,7 +7,7 @@ class Gun {
         this.y = player.y;
         this.sound = 100
         this.speed = 5
-        this.damage = 5
+        this.damage = 10
         this.cooldown = 0
         this.maxCooldown = 7;
         this.endPos
@@ -16,7 +16,7 @@ class Gun {
     shoot() {
         if (!this.isCool()) return
         zombies.forEach(zombie => { zombie.canHear() })
-        createBullets(gun.endPos.x, gun.endPos.y, 2, this.rot, this.speed)
+        createBullets(gun.endPos.x, gun.endPos.y, 2, this.rot, this.speed, this.damage)
         this.cooldown = 0;
     }
     isCool() {
