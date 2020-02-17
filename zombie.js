@@ -5,7 +5,7 @@ class Zombie {
         this.y = y;
         this.s = s;
         this.r = s / 2;
-        this.worth = Math.round(Math.random()*health/s);
+        this.worth = Math.round(Math.random() * health / s);
         this.detRad = s * 3;
         this.maxtHealth = health
         this.health = health;
@@ -29,13 +29,23 @@ class Zombie {
         this.rot = rotation(thispos, pos)
     }
 
-    drawRad() {
-        if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r) drawArc(this.x, this.y, this.detRad, "red");
-        else drawArc(this.x, this.y, this.detRad, "green");
+    drawRad(col, rad) {
+        drawArc(this.x, this.y, rad, col);
     }
 
     radius() {
-        if (esp.vision) this.drawRad();
+        if (esp.sound) {
+            if (dist(player.x, player.y, this.x, this.y) < gun.sound + player.r)
+                this.drawRad('red', gun.sound + player.r)
+            else
+                this.drawRad('blue', gun.sound + player.r)
+        }
+        if (esp.vision) {
+            if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r)
+                this.drawRad("red", this.detRad)
+            else
+                this.drawRad('green', this.detRad);
+        }
 
         if (dist(player.x, player.y, this.x, this.y) < this.detRad + player.r) return true;
         return false;
@@ -156,8 +166,7 @@ function drawZombies() {
     while (destroyZombies.length) {
         // Removes all the zombie
         var id = destroyZombies.pop()
-        // Remove this zombie from the array
+            // Remove this zombie from the array
         zombies.splice(id, 1);
     }
 }
-

@@ -1,9 +1,8 @@
 var c = document.getElementById("myCanvas");
 var ctx = c.getContext("2d");
 
-c.style = -window.innerHeight / 2;
-c.width = window.innerWidth / 2;
-c.height = window.innerHeight / 2;
+c.width = window.innerWidth;
+c.height = window.innerHeight;
 
 var esp = {
     enable: function () {
