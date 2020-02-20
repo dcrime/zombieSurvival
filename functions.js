@@ -24,6 +24,16 @@ function rotation(pos, pos2) {
     return Math.atan2(dy, dx)
 }
 
+function randInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+}
+
+function inside(pos, rect){
+	return pos.x > rect.x && pos.x < rect.x+rect.w && pos.y < rect.y+rect.h && pos.y > rect.y
+}
+
 function direction(pos, rot, rad = 0) {
     var cos = Math.cos(rot)
     var sin = Math.sin(rot)
@@ -48,6 +58,13 @@ function findNewPoint(x, y, angle, distance) {
     return result;
 }
 
+function tally(num) {
+    var text = ''
+    text += '卌'.repeat(num / 5)
+    text += '|'.repeat(num % 5)
+    return text;
+}
+
 function progressBar(x, y, w, h, p, mP) {
     var percentage = (p / mP) * w
     ctx.save();
@@ -64,6 +81,15 @@ function progressBar(x, y, w, h, p, mP) {
     ctx.restore();
 }
 
+function writeText(text, x, y, textSize, center = 'center', color = 'white', font = 'Arial') {
+    ctx.save()
+    ctx.font = textSize + "px " + font;
+    ctx.fillStyle = color;
+    ctx.textAlign = center;
+    ctx.fillText(text, x, y);
+    ctx.restore()
+}
+
 function drawArc(x, y, r, c = "white") {
     ctx.save();
     ctx.strokeStyle = c;
@@ -73,12 +99,12 @@ function drawArc(x, y, r, c = "white") {
     ctx.restore();
 }
 
-function drawRect(x, y, h, w, c = "white") {
+function drawRect(x, y, w, h, c = "white") {
     ctx.save();
     ctx.strokeStyle = c;
     //ctx.lineWidth = "10";
     ctx.beginPath();
-    ctx.rect(x, y, h, w);
+    ctx.rect(x, y, w, h);
     ctx.stroke();
     ctx.restore();
 }
@@ -95,4 +121,15 @@ function drawShape(shape, close, color = "white") {
     if (close) { ctx.closePath() }
     ctx.stroke();
     ctx.restore();
+}
+
+function drawLine(start, end, color = "white") {
+    ctx.save();
+    ctx.beginPath()
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = color;
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
+    ctx.restore()
 }

@@ -1,5 +1,5 @@
 class Zombie {
-    constructor(x, y, s, rot, speed, health, id) {
+    constructor(x, y, s, rot, speed, atkCool, damage, health, id) {
         this.id = id;
         this.x = x;
         this.y = y;
@@ -12,6 +12,9 @@ class Zombie {
         this.speed = speed;
         this.goal = { x: x, y: y };
         this.rot = rot;
+        this.damage = damage
+        this.atkCool = atkCool
+        this.cool = 0;
     }
 
     newGoal() {
@@ -27,6 +30,24 @@ class Zombie {
         }
         this.goal = pos;
         this.rot = rotation(thispos, pos)
+    }
+
+    attack() {
+        player.health -= this.damage
+    }
+
+    shouldAttack() {
+        if (this.cool <= 0) {
+            if (dist(player.x, player.y, this.x, this.y) < this.r + player.r) {
+                this.attack()
+                this.cool = this.atkCool
+            }
+        } else {
+            if (this.cool > 0)
+                this.cool -= 0.1
+            else if (this.cool < 0)
+                this.cool = 0
+        }
     }
 
     drawRad(col, rad) {
@@ -77,15 +98,18 @@ class Zombie {
             }
             this.rot = rotation(player, pos)
         }
-        if (dist(player.x, player.y, pos.x, pos.y) < this.r + player.r) this.rot = rotation(pos, player)
+        if (dist(player.x, player.y, pos.x, pos.y) < this.r + player.r) {
+            //this.rot = rotation(pos, player)
+            pos = { x: this.x, y: this.y }
+        } else {
+            var pos = direction(pos, this.rot, this.speed);
+        }
         zombies.forEach(zombie => {
             if (zombie.id == this.id) return;
             if (dist(zombie.x, zombie.y, pos.x, pos.y) < this.r + zombie.r) {
                 this.rot = rotation(pos, zombie)
             }
         });
-
-        var pos = direction(pos, this.rot, this.speed);
 
         this.x = pos.x;
         this.y = pos.y;
@@ -107,8 +131,19 @@ class Zombie {
 
     draw() {
         if (esp.path) this.drawPath();
+        var cool = this.cool/this.atkCool % 2
+        var pos = {
+            x: this.x,
+            y: this.y
+        }
         this.drawHealth();
         drawArc(this.x, this.y, this.r);
+        var startPos = direction(pos, this.rot + 5, this.r);
+        var endPos = direction(startPos, this.rot - cool, this.r);
+        drawLine(startPos, endPos, 'white')
+        var startPos = direction(pos, this.rot - 5, this.r);
+        var endPos = direction(startPos, this.rot + cool, this.r);
+        drawLine(startPos, endPos, 'white')
     }
 
     destroy() {
@@ -127,6 +162,7 @@ class Zombie {
                 damage = true;
                 dmg = bullet.damage
                 bullet.destroy();
+                destroyBullets()
             }
         });
         if (damage) this.health -= dmg;
@@ -139,6 +175,7 @@ class Zombie {
         this.move();
         this.radius();
         this.draw();
+        this.shouldAttack();
         if (this.shouldDie()) this.destroy();
     };
 }
@@ -147,14 +184,14 @@ zombies = [];
 zombieIDs = [];
 destroyZombies = [];
 
-function createZombies(x, y, s, rot, speed, health) {
+function createZombies(x, y, s, rot, speed, atk, damage, health) {
     var id;
     if (!zombieIDs.length) {
         id = zombies.length + 1
     } else {
         id = zombieIDs.shift();
     }
-    zombies.push(new Zombie(x, y, s, rot, speed, health, id))
+    zombies.push(new Zombie(x, y, s, rot, speed, atk, damage, health, id))
 }
 
 function drawZombies() {

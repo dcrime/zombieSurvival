@@ -8,7 +8,7 @@ class Bullet {
         this.damage = damage;
         this.speed = speed;
         this.lifeTime = 0;
-        this.lifeSpan = 100;
+        this.lifeSpan = randInt(90, 100);
         this.rot = rot;
     }
 
@@ -74,6 +74,13 @@ function drawBullets() {
             bullets[p].update();
         }
     }
+    while (destroybullets.length) {
+        var id = destroybullets.pop()
+        bullets.splice(id, 1);
+    }
+}
+
+function destroyBullets(){
     while (destroybullets.length) {
         var id = destroybullets.pop()
         bullets.splice(id, 1);

@@ -1,4 +1,4 @@
-player = new Player("player1", 100, 0, c.width / 2, c.height / 2);
+player = new Player("player1", 100, 100, 5, 0, c.width / 2, c.height / 2);
 gun = new Gun();
 
 function createFewZombies() {
@@ -7,7 +7,7 @@ function createFewZombies() {
             x: Math.random() * c.width,
             y: Math.random() * c.height
         }
-        createZombies(randPos.x, randPos.y, 20, 50, 0.5, 100);
+        createZombies(randPos.x, randPos.y, 20, 50, 0.5, 3, 10, 100);
     }
 }
 
@@ -15,12 +15,12 @@ createFewZombies();
 
 
 function draw() {
-    buyMenuHandler();
-    //console.log()
+
 }
 
 function gameLoop() {
     ctx.clearRect(0, 0, c.width, c.height)
+    if(buyMenu()) return request = requestAnimationFrame(gameLoop);
     player.update();
     gun.update();
     drawBullets();
