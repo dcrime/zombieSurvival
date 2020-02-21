@@ -34,6 +34,10 @@ var mouse = {
     left: false
 }
 
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
 function keydown(e) {
     if (keymap.hasOwnProperty(e.key) && !keymap[e.key]) {
         keymap[e.key] = true;

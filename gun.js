@@ -9,7 +9,7 @@ class Gun {
         this.speed = 5
         this.damage = 10
         this.cooldown = 0
-        this.maxCooldown = 7;
+        this.maxCooldown = 20;
         this.endPos
     }
 

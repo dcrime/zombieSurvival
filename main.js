@@ -15,12 +15,12 @@ createFewZombies();
 
 
 function draw() {
-
+    player.miscs()
 }
 
 function gameLoop() {
     ctx.clearRect(0, 0, c.width, c.height)
-    if(buyMenu()) return request = requestAnimationFrame(gameLoop);
+    if(buyMenu()) {draw(); return request = requestAnimationFrame(gameLoop)}
     player.update();
     gun.update();
     drawBullets();

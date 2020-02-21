@@ -46,11 +46,15 @@ class Player {
         }
     }
 
-    draw(){
-        drawArc(this.x, this.y, this.r);
+    miscs(){
         progressBar(20, 20, 200, 10, this.health, this.maxHealth)
         var text = tally(this.lives)
         writeText(text, 230 + ctx.measureText(text).width, 30, 20)
+        writeText(this.money + '$', 30, 50, 20)
+    }
+
+    draw(){
+        drawArc(this.x, this.y, this.r);
     }
 
     update() {

@@ -14,16 +14,61 @@ class Buttons {
         return inside(mouse, this.area)
     }
 
+    upgrades(item, name) {
+        if (player.money < item.money) return
+        switch (name) {
+            case 'damage':
+                player.money -= item.money
+                item.money *= 2
+                item.points++
+                gun.damage += 0.5
+                    break;
+            case 'speed':
+                player.money -= item.money
+                item.money *= 2
+                item.points++
+                player.speed += 0.5
+                    break;
+            case 'fireRate':
+                player.money -= item.money
+                item.money *= 2
+                item.points++
+                gun.maxCooldown -= 0.5
+                    break;
+            case 'health':
+                player.money -= item.money
+                player.health = player.maxHealth
+                    break;
+
+            default:
+                break;
+        }
+    }
+
+    writePoints(col){
+        switch (this.text) {
+            case 'health':
+                items['health'].points = player.health
+                items['health'].money = Math.floor((player.maxHealth - player.health) *1.5)
+                writeText(items[this.text].points + '/' + player.maxHealth, (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
+                break;
+        
+            default:
+                writeText(items[this.text].points, (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
+                break;
+        }
+    }
+
     draw(click) {
         var col;
         if (this.mouseIn()) {
             col = this.color
-            if(click)
-                items[this.text]++
+            if (click)
+                this.upgrades(items[this.text], this.text)
         } else col = 'gray'
         drawRect(this.area.x, this.area.y, this.area.w, this.area.h, col)
-        writeText(items[this.text], (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
-        writeText(this.text, (this.offLeft == 0 ? this.area.x : this.area.x + this.offLeft), this.area.y + (this.off == 0 ? this.area.w : this.area.h / this.off), this.area.h / this.off, 'left', col)
+        this.writePoints(col)
+        writeText(this.text.capitalize() + ' ' + items[this.text].money + '$', (this.offLeft == 0 ? this.area.x : this.area.x + this.offLeft), this.area.y + (this.off == 0 ? this.area.w : this.area.h / this.off), this.area.h / this.off, 'left', col)
     }
 
     update(click = false) {
@@ -51,9 +96,10 @@ function release(e) {
 }
 
 var items = {
-    damage: 0,
-    speed: 0,
-    fireRate: 0,
+    damage: { points: 0, money: 5 },
+    speed: { points: 0, money: 5 },
+    fireRate: { points: 0, money: 5 },
+    health: { points: 0, money: 10}
 }
 
 var buttons = []
