@@ -1,10 +1,11 @@
 class Player {
-    constructor(name, health, maxHealth, lives, money, x, y) {
+    constructor(name, health, maxHealth, speed, lives, money, x, y) {
         this.name = name;
         this.maxHealth = maxHealth
         this.health = health;
         this.lives = lives;
         this.money = money;
+        this.speed = speed
         this.s = 20;
         this.r = this.s/2;
         this.rot = 0;
@@ -18,10 +19,10 @@ class Player {
     };
 
     move(){
-        if(keymap['a']) this.x-=1
-        if(keymap['s']) this.y+=1
-        if(keymap['d']) this.x+=1
-        if(keymap['w']) this.y-=1
+        if(keymap['a']) this.x-=this.speed
+        if(keymap['s']) this.y+=this.speed
+        if(keymap['d']) this.x+=this.speed
+        if(keymap['w']) this.y-=this.speed
         if(mouse.left) this.shoot()
     }
     

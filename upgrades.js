@@ -19,21 +19,22 @@ class Buttons {
         switch (name) {
             case 'damage':
                 player.money -= item.money
-                item.money *= 2
+                item.money += Math.floor((item.points*3)/6)
                 item.points++
                 gun.damage += 0.5
                     break;
             case 'speed':
                 player.money -= item.money
-                item.money *= 2
+                item.money += Math.floor((item.points*3)/6)
                 item.points++
-                player.speed += 0.5
+                player.speed += 0.1
                     break;
             case 'fireRate':
+                if(gun.maxCooldown <= 0.2) break
                 player.money -= item.money
-                item.money *= 2
+                item.money += Math.floor((item.points*3)/6)
                 item.points++
-                gun.maxCooldown -= 0.5
+                gun.maxCooldown -= 0.2
                     break;
             case 'health':
                 player.money -= item.money
@@ -46,17 +47,24 @@ class Buttons {
     }
 
     writePoints(col){
+        var text = '';
         switch (this.text) {
             case 'health':
                 items['health'].points = player.health
                 items['health'].money = Math.floor((player.maxHealth - player.health) *1.5)
-                writeText(items[this.text].points + '/' + player.maxHealth, (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
+                text = items[this.text].points + '/' + player.maxHealth
                 break;
-        
+            case 'fireRate':
+                text = `${parseFloat(gun.maxCooldown).toFixed(1)}|${items['fireRate'].points}`
+                break;
+            case 'speed':
+                text = `${parseFloat(player.speed).toFixed(1)}|${items['speed'].points}`
+                break
             default:
-                writeText(items[this.text].points, (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
+                text = items[this.text].points
                 break;
         }
+        writeText(text, (this.offLeft == 0 ? this.textArea.x : this.textArea.x - this.offLeft), this.textArea.y + (this.off == 0 ? this.textArea.w : this.textArea.h / this.off), this.textArea.h / this.off, 'right', col)
     }
 
     draw(click) {
@@ -109,7 +117,7 @@ function setup() {
     for (i in items) {
         l++
         var h = 50
-        var s = { x: c.width / 4, y: c.height / 4 + (l * h), h: h, w: c.height / 3 }
+        var s = { x: c.width / 2.5, y: c.height / 4 + (l * h), h: h, w: c.height / 2.5 }
         buttons.push(new Buttons(i, s, l, 'center', 1.5, 5, 'white', h))
     }
 }

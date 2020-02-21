@@ -1,4 +1,4 @@
-player = new Player("player1", 100, 100, 5, 0, c.width / 2, c.height / 2);
+player = new Player("player1", 100, 100, 1, 5, 0, c.width / 2, c.height / 2);
 gun = new Gun();
 
 function createFewZombies() {
